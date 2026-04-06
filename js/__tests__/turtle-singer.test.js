@@ -996,6 +996,9 @@ describe("processPitch internal addPitch behavior", () => {
         });
 
         // Prevent deep runtime execution
+        // Mocking processNote to isolate pitch-processing behavior.
+        // Full execution requires playback/scheduling subsystems,
+        // which are outside the scope of this regression test.
         jest.spyOn(Singer, "processNote").mockImplementation(() => {});
     });
     afterEach(() => {
@@ -1037,5 +1040,33 @@ describe("processPitch internal addPitch behavior", () => {
         Singer.processPitch(activityMock, "C", 4, 0, turtleMock, blk);
         const mapping = turtleMock.singer.pitchDrumTable;
         expect(mapping["C4"]).toBe("snare");
+    });
+
+    it("should maintain consistent state relationships when updating pitch (invariant)", () => {
+        const blk = "blk";
+        Singer.processPitch(activityMock, "C", 4, 0, turtleMock, blk);
+
+        const after = turtleMock.singer;
+
+        // invariant: pitch should be added
+        expect(after.notePitches[blk].length).toBeGreaterThan(0);
+
+        // invariant: beat values align with number of pitches
+        expect(after.noteBeatValues[blk].length).toBe(after.notePitches[blk].length);
+
+        // invariant: octave + cents structure still valid
+        expect(after.noteOctaves[blk].length).toBe(after.notePitches[blk].length);
+        expect(after.noteCents[blk].length).toBe(after.notePitches[blk].length);
+    });
+
+    it("should not mutate previously computed pitch data across calls (regression)", () => {
+        const blk = "blk";
+        Singer.processPitch(activityMock, "C", 4, 0, turtleMock, blk);
+        const firstState = [...turtleMock.singer.notePitches[blk]];
+        Singer.processPitch(activityMock, "D", 4, 0, turtleMock, blk);
+
+        // regression guard: previous data should not be overwritten unexpectedly
+        expect(firstState.length).toBe(1);
+        expect(turtleMock.singer.notePitches[blk].length).toBe(2);
     });
 });
