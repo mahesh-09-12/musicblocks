@@ -1428,24 +1428,24 @@ describe("Palettes Class", () => {
             const realCreate = REAL_CREATE_ELEMENT;
 
             document.createElement = jest.fn(tag => {
-            const el = realCreate.call(document, tag);
+                const el = realCreate.call(document, tag);
 
-            // Preserve upstream behavior for td
-            if (tag === "td") {
-                const originalAppend = el.appendChild;
-                el.appendChild = child => {
-                    capturedImg = child;
-                    return originalAppend.call(el, child);
-                };
-            }
+                // Preserve upstream behavior for td
+                if (tag === "td") {
+                    const originalAppend = el.appendChild;
+                    el.appendChild = child => {
+                        capturedImg = child;
+                        return originalAppend.call(el, child);
+                    };
+                }
 
-            // Preserve your img handling
-            if (tag === "img") {
-                el.width = 50;
-                el.style = {};
-            }
+                // Preserve your img handling
+                if (tag === "img") {
+                    el.width = 50;
+                    el.style = {};
+                }
 
-            return el;
+                return el;
             });
             global.mediaPALETTE = "<svg></svg>";
             global.cameraPALETTE = "<svg></svg>";
@@ -1529,22 +1529,22 @@ describe("Palettes Class", () => {
             const realCreate = REAL_CREATE_ELEMENT;
 
             document.createElement = jest.fn(tag => {
-            const el = realCreate.call(document, tag);
+                const el = realCreate.call(document, tag);
 
-            if (tag === "td") {
-                const originalAppend = el.appendChild;
-                el.appendChild = child => {
-                    capturedImg = child;
-                    return originalAppend.call(el, child);
-                };
-            }
+                if (tag === "td") {
+                    const originalAppend = el.appendChild;
+                    el.appendChild = child => {
+                        capturedImg = child;
+                        return originalAppend.call(el, child);
+                    };
+                }
 
-            if (tag === "img") {
-                el.width = 50;
-                el.style = {};
-            }
+                if (tag === "img") {
+                    el.width = 50;
+                    el.style = {};
+                }
 
-            return el;
+                return el;
             });
             document.addEventListener = jest.fn();
             document.removeEventListener = jest.fn();
