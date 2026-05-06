@@ -382,7 +382,7 @@ describe("OCTAVE_NOTATION_MAP", () => {
 describe("ACCIDENTAL_MAP", () => {
     test("should correctly map accidentals to ABC notation", () => {
         expect(ACCIDENTAL_MAP["♯"]).toBe("^");
-        expect(ACCIDENTAL_MAP["♭"]).toBe("_");
+        expect(ACCIDENTAL_MAP["♭"]).toBe("-");
     });
 
     test("should return undefined for unmapped accidentals", () => {
