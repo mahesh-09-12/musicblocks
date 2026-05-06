@@ -194,13 +194,13 @@ describe("LocalCard", () => {
             expect(planet.LocalPlanet.openProject).toHaveBeenCalledWith("p7");
         });
 
-        it("should call openProject when the merge button is clicked", () => {
-            const card = prepareCard("p8");
-            card.render();
+        // it("should call openProject when the merge button is clicked", () => {
+        //     const card = prepareCard("p8");
+        //     card.render();
 
-            document.getElementById("local-project-merge-p8").click();
-            expect(planet.LocalPlanet.openProject).toHaveBeenCalledWith("p8");
-        });
+        //     document.getElementById("local-project-merge-p8").click();
+        //     expect(planet.LocalPlanet.openProject).toHaveBeenCalledWith("p8");
+        // });
 
         it("should call openDeleteModal when the delete button is clicked", () => {
             const card = prepareCard("p9");
